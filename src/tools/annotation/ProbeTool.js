@@ -44,7 +44,9 @@ export default class ProbeTool extends BaseAnnotationTool {
 
     if (!goodEventData) {
       logger.error(
-        `required eventData not supplied to tool ${this.name}'s createNewMeasurement`
+        `required eventData not supplied to tool ${
+          this.name
+        }'s createNewMeasurement`
       );
 
       return;
@@ -54,6 +56,7 @@ export default class ProbeTool extends BaseAnnotationTool {
       visible: true,
       active: true,
       color: undefined,
+      fid: 0,
       invalidated: true,
       handles: {
         end: {
@@ -130,21 +133,38 @@ export default class ProbeTool extends BaseAnnotationTool {
     const eventData = evt.detail;
     const { handleRadius } = this.configuration;
     const toolData = getToolState(evt.currentTarget, this.name);
+    const aiProbeState = getToolState(evt.currentTarget, 'AIProbe');
+    let numberOfTools = 0;
 
     if (!toolData) {
       return;
     }
 
+    try {
+      numberOfTools += toolData.data.length;
+    } catch (err) {
+      numberOfTools += 0;
+    }
+
+    try {
+      numberOfTools += aiProbeState.data.length;
+    } catch (err) {
+      numberOfTools += 0;
+    }
+
     // We have tool data for this element - iterate over each one and draw it
     const context = getNewContext(eventData.canvasContext.canvas);
     const { image, element } = eventData;
-    const fontHeight = textStyle.getFontSize();
 
     for (let i = 0; i < toolData.data.length; i++) {
       const data = toolData.data[i];
 
       if (data.visible === false) {
         continue;
+      }
+
+      if (data.fid === 0) {
+        data.fid = numberOfTools;
       }
 
       draw(context, context => {
@@ -165,24 +185,12 @@ export default class ProbeTool extends BaseAnnotationTool {
           }
         }
 
-        let text, str;
+        let text;
 
-        const { x, y, storedPixels, sp, mo, suv } = data.cachedStats;
+        const { x, y } = data.cachedStats;
 
         if (x >= 0 && y >= 0 && x < image.columns && y < image.rows) {
-          text = `${x}, ${y}`;
-
-          if (image.color) {
-            str = `R: ${storedPixels[0]} G: ${storedPixels[1]} B: ${
-              storedPixels[2]
-            }`;
-          } else {
-            // Draw text
-            str = `SP: ${sp} MO: ${parseFloat(mo.toFixed(3))}`;
-            if (suv) {
-              str += ` SUV: ${parseFloat(suv.toFixed(3))}`;
-            }
-          }
+          text = `${data.fid}`;
 
           // Coords for text
           const coords = {
@@ -195,13 +203,6 @@ export default class ProbeTool extends BaseAnnotationTool {
             coords
           );
 
-          drawTextBox(
-            context,
-            str,
-            textCoords.x,
-            textCoords.y + fontHeight + 5,
-            color
-          );
           drawTextBox(context, text, textCoords.x, textCoords.y, color);
         }
       });
