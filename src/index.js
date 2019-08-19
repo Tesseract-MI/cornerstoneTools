@@ -77,6 +77,7 @@
 
 import {
   AngleTool,
+  AIProbeTool,
   ArrowAnnotateTool,
   BidirectionalTool,
   CircleRoiTool,
@@ -203,6 +204,7 @@ const cornerstoneTools = {
   // ~~~ TOOLS
   // ~ Annotation Tools
   AngleTool,
+  AIProbeTool,
   ArrowAnnotateTool,
   BidirectionalTool,
   CircleRoiTool,
@@ -302,6 +304,7 @@ export {
   // ~~~ TOOLS
   // ~ Annotation Tools
   AngleTool,
+  AIProbeTool,
   ArrowAnnotateTool,
   BidirectionalTool,
   CircleRoiTool,

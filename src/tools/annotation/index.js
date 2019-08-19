@@ -1,4 +1,5 @@
 import AngleTool from './AngleTool.js';
+import AIProbeTool from './AIProbeTool.js';
 import ArrowAnnotateTool from './ArrowAnnotateTool.js';
 import BidirectionalTool from './BidirectionalTool.js';
 import CircleRoiTool from './CircleRoiTool.js';
@@ -12,6 +13,7 @@ import TextMarkerTool from './TextMarkerTool.js';
 
 // Named Exports
 export { default as AngleTool } from './AngleTool.js';
+export { default as AIProbeTool } from './AIProbeTool.js';
 export { default as ArrowAnnotateTool } from './ArrowAnnotateTool.js';
 export { default as BidirectionalTool } from './BidirectionalTool.js';
 export { default as CircleRoiTool } from './CircleRoiTool.js';
@@ -26,6 +28,7 @@ export { default as TextMarkerTool } from './TextMarkerTool.js';
 // Namespace, default export
 export default {
   AngleTool,
+  AIProbeTool,
   ArrowAnnotateTool,
   BidirectionalTool,
   CircleRoiTool,
